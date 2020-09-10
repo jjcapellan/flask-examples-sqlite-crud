@@ -4,6 +4,10 @@ import json
 
 bp = Blueprint('crud', __name__)
 
+
+
+# READ OPERATIONS **************************
+
 @bp.route('/employees', methods=['GET'])
 def employees():
     db = get_db()
@@ -28,6 +32,9 @@ def department(department):
     return make_response(json.dumps([dict(row) for row in employees_by_department_list]), 200)
 
 
+
+# CREATE OPERATIONS ************************
+
 @bp.route('/add', methods=['POST'])
 def add():
     db = get_db()
@@ -42,6 +49,9 @@ def add():
     return make_response('New employee registered', 200)
 
 
+
+# UPDATE OPERATIONS ************************
+
 @bp.route('/update/<string:name>', methods=['PUT'])
 def update(name):
     db = get_db()
@@ -55,6 +65,9 @@ def update(name):
 
     return make_response('Employee updated', 200)
 
+
+
+# DELETE OPERATIONS ************************
 
 @bp.route('/delete/<string:name>', methods=['DELETE'])
 def delete(name):
