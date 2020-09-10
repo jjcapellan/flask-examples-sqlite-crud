@@ -40,3 +40,17 @@ def add():
         return make_response('Invalid data', 400)
 
     return make_response('New employee registered', 200)
+
+
+@bp.route('/update/<string:name>', methods=['PUT'])
+def update(name):
+    db = get_db()
+    data = request.get_json()
+    try:
+        db.execute('UPDATE employees SET name = ?, department = ?, age = ?, salary = ? WHERE name = ?;',\
+            (data['name'], data['department'], data['age'], data['salary'], data['name']))
+        db.commit()
+    except:
+        return make_response('Invalid data', 400)
+
+    return make_response('Employee updated', 200)
