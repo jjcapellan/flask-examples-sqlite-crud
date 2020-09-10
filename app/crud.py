@@ -54,3 +54,15 @@ def update(name):
         return make_response('Invalid data', 400)
 
     return make_response('Employee updated', 200)
+
+
+@bp.route('/delete/<string:name>', methods=['DELETE'])
+def delete(name):
+    db = get_db()
+    try:
+        db.execute('DELETE FROM employees WHERE name = ?', (name,))
+        db.commit()
+    except:
+        return make_response('Invalid data', 400)
+
+    return make_response('Employee deleted', 200)
