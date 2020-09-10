@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response
+from flask import Blueprint, make_response, request
 from app.db import get_db
 import json
 
@@ -26,3 +26,17 @@ def department(department):
     employees_by_department_list = db.execute('SELECT * FROM employees WHERE department = ?', (department,)).fetchall()
 
     return make_response(json.dumps([dict(row) for row in employees_by_department_list]), 200)
+
+
+@bp.route('/add', methods=['POST'])
+def add():
+    db = get_db()
+    data = request.get_json()
+    try:
+        db.execute('INSERT INTO employees (name, department, age, salary) VALUES (?,?,?,?);',\
+             (data['name'], data['department'], data['age'], data['salary'],))
+        db.commit()
+    except:
+        return make_response('Invalid data', 400)
+
+    return make_response('New employee registered', 200)
