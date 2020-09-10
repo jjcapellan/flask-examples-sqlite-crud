@@ -18,3 +18,11 @@ def employee(name):
     employee_row = db.execute('SELECT * FROM employees WHERE name = ?;', (name,)).fetchone()
 
     return make_response(json.dumps(dict(employee_row)), 200)
+
+
+@bp.route('/department/<string:department>')
+def department(department):
+    db = get_db()
+    employees_by_department_list = db.execute('SELECT * FROM employees WHERE department = ?', (department,)).fetchall()
+
+    return make_response(json.dumps([dict(row) for row in employees_by_department_list]), 200)
